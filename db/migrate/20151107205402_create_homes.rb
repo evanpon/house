@@ -3,7 +3,7 @@ class CreateHomes < ActiveRecord::Migration
     create_table :homes do |t|
       t.string :address
       t.integer :listing_id
-      t.integer :price
+      t.string :price
       t.integer :ranking
 
       t.timestamps null: false
