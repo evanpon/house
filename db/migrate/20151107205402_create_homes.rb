@@ -5,7 +5,7 @@ class CreateHomes < ActiveRecord::Migration
       t.integer :listing_id
       t.string :price
       t.integer :ranking
-
+      
       t.timestamps null: false
     end
   end

@@ -13,3 +13,45 @@
  *= require_tree .
  *= require_self
  */
+
+.image_count {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.left_box {
+  float: left;
+  width: 650px;
+}
+
+.spacer {
+  width: 5px;
+  display: inline-block;
+
+}
+.clear {
+  clear: both;
+}
+.bottom {
+  clear: both;
+  margin-bottom: 30px;
+}
+.house_image {
+  width: 640px;
+}
+.success {
+  color: green;
+}
+.failure {
+  color: red;
+}
+.hidden {
+  display: none;
+}
+textarea {
+  width: 500px;
+  height: 100px;
+}
+.field {
+  margin-bottom: 10px;
+}

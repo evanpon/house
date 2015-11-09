@@ -1,2 +1,40 @@
-%h1= home.address
-%h1= home.price
+.left_box
+  = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
+  .image_count
+    - index = 1
+    - home.image_count.to_i.times do
+      = link_to(index, '#', {'data-image-id' => index, 'data-home-id' => home.listing_id})
+      - index += 1
+      .spacer
+        %nbsp
+  
+.right_box
+  %h1= home.address
+  %h1= home.price
+
+  %h3= link_to('See it on Zillow', home.zillow_url)
+  
+  = form_for(home, remote: true) do |f|
+    - if home.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@home.errors.count, "error")} prohibited this home from being saved:"
+        %ul
+          - home.errors.full_messages.each do |msg|
+            %li= msg
+
+    .field
+      = f.label :notes
+      %br
+      = f.text_area :notes
+    .field
+      = f.label :ranking
+      %br
+      = f.number_field :ranking
+    .actions
+      = f.submit 'Save'
+    .success.hidden
+      Saved
+    .failure.hidden
+      Error
+.bottom
+

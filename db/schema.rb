@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151107221418) do
+ActiveRecord::Schema.define(version: 20151109220802) do
 
   create_table "attributes", force: :cascade do |t|
     t.integer  "home_id",    limit: 4
@@ -44,8 +44,9 @@ ActiveRecord::Schema.define(version: 20151107221418) do
     t.integer  "listing_id", limit: 4
     t.string   "price",      limit: 255
     t.integer  "ranking",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "notes",      limit: 2000
   end
 
 end
