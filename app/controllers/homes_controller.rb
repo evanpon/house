@@ -25,4 +25,9 @@ class HomesController < ApplicationController
   def home_params
     params.require(:home).permit(:notes, :ranking)
   end
+
+  def ranked
+    @homes = Home.order(ranking: :desc)
+    render :index
+  end
 end

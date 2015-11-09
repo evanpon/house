@@ -2,7 +2,7 @@ require 'open-uri'
 
 class Home < ActiveRecord::Base
   has_many :details
-    
+
   def method_missing(method, *args, &block)
     value = data[method.to_s]
     if value.nil?
