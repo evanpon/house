@@ -3,9 +3,16 @@ $ ->
     e.preventDefault()
     imageId = $(this).data("image-id")
     homeId = $(this).data("home-id")
-    # url = "http://www.rmlsweb.com/V4/subsys/LLPM/photo.aspx?mlsn=#{homeId}&idx=#{imageId}"
     url = "https://s3-us-west-2.amazonaws.com/evanpon.applications/house/#{homeId}/#{imageId}"
     $("#image_#{homeId}").attr("src", url)
+    $("#image_#{homeId}").show()
+    $("#map_#{homeId}").hide()
+
+  $("a[data-map-home-id]").hover (e) ->
+    e.preventDefault()
+    homeId = $(this).data("map-home-id")
+    $("#image_#{homeId}").hide()
+    $("#map_#{homeId}").show()
 
   $("form").on("ajax:success", (e, data, status, xhr) ->
     element = $(this).find(".success")

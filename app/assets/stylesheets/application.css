@@ -14,6 +14,9 @@
  *= require_self
  */
 
+html {
+  font-family: 'Droid Serif', serif
+}
 .image_count {
   text-align: center;
   font-size: 1.2em;
@@ -54,4 +57,14 @@ textarea {
 }
 .field {
   margin-bottom: 10px;
+}
+.google_map {
+  width: 640px;
+  height: 480px;
+  frameborder: 0;
+  border: 0;
+  display: none;
+}
+h1, h2, h3, h4, h5 {
+  margin: 0;
 }

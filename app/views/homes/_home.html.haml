@@ -1,5 +1,6 @@
 .left_box
   = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
+  %iframe{src: home.google_map_url, class: 'google_map hidden', id: "map_#{home.listing_id}"}
   .image_count
     - index = 1
     - home.image_count.to_i.times do
@@ -7,10 +8,16 @@
       - index += 1
       .spacer
         %nbsp
+    = link_to('map', '#', {'data-map-home-id' => home.listing_id})
+  
   
 .right_box
-  %h1= home.address
-  %h1= home.price
+  %h1 
+    = home.address
+    %span.spacer
+    = '-'
+    %span.spacer
+    = home.price
 
   %h3= link_to('See it on Zillow', home.zillow_url)
   

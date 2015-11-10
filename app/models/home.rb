@@ -105,4 +105,9 @@ class Home < ActiveRecord::Base
     details.create(name: 'zillow_url', value: zillow_url)
   end
   
+  def google_map_url
+    api_key = 'AIzaSyA7NyiO-jk7tGZkrTEPp9RCHT6R6vo4Z6U'
+    address_param = CGI.escape("#{address}, Portland OR")
+    "https://www.google.com/maps/embed/v1/place?key=#{api_key}&q=#{address_param}&zoom=14"
+  end
 end
