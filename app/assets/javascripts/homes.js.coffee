@@ -14,6 +14,12 @@ $ ->
     $("#image_#{homeId}").hide()
     $("#map_#{homeId}").show()
 
+  $("a[data-image-id]").click (e) ->
+    e.preventDefault()
+    
+  $("a[data-map-home-id]").click (e) ->
+    e.preventDefault()
+
   $("form").on("ajax:success", (e, data, status, xhr) ->
     element = $(this).find(".success")
     element.show().fadeOut(1500)

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :homes do
     collection do
       get 'ranked'
+      get 'unreviewed'
     end
   end
   root 'homes#index'

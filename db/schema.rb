@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151109220802) do
+ActiveRecord::Schema.define(version: 20151107221418) do
 
   create_table "attributes", force: :cascade do |t|
     t.integer  "home_id",    limit: 4
@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 20151109220802) do
   create_table "details", force: :cascade do |t|
     t.integer  "home_id",    limit: 4
     t.string   "name",       limit: 255
-    t.string   "value",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "value",      limit: 2000
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "details", ["home_id", "name"], name: "index_details_on_home_id_and_name", unique: true, using: :btree
@@ -43,10 +43,13 @@ ActiveRecord::Schema.define(version: 20151109220802) do
     t.string   "address",    limit: 255
     t.integer  "listing_id", limit: 4
     t.string   "price",      limit: 255
+    t.string   "notes",      limit: 2000
     t.integer  "ranking",    limit: 4
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
-    t.string   "notes",      limit: 2000
   end
+
+  add_index "homes", ["listing_id"], name: "index_homes_on_listing_id", unique: true, using: :btree
+  add_index "homes", ["ranking"], name: "index_homes_on_ranking", using: :btree
 
 end

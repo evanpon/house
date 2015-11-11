@@ -1,6 +1,6 @@
 class HomesController < ApplicationController
   def index
-    @homes = Home.all
+    @homes = Home.order(id: :desc)
   end
   
   # PATCH/PUT /users/1
@@ -22,12 +22,21 @@ class HomesController < ApplicationController
     end
   end
 
+  def show
+    @home = Home.where(listing_id: params[:id]).first
+  end
+
   def home_params
     params.require(:home).permit(:notes, :ranking)
   end
 
   def ranked
-    @homes = Home.order(ranking: :desc)
+    @homes = Home.where('ranking > 0').order(ranking: :desc)
+    render :index
+  end
+  
+  def unreviewed
+    @homes = Home.where('ranking is null')
     render :index
   end
 end

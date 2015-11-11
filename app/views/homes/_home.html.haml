@@ -18,9 +18,38 @@
     = '-'
     %span.spacer
     = home.price
-
-  %h3= link_to('See it on Zillow', home.zillow_url)
+    
+  %h3 
+    = home.listing_id
+    %span.spacer
+    = '-'
+    %span.spacer
+    = link_to('See it on Zillow', home.zillow_url)
   
+  .details
+    .line
+      Bedrooms:
+      = home.bedrooms
+      .spacer
+      Bathrooms:
+      = home.bathrooms
+      .spacer
+      Square Footage:
+      = home.square_footage
+      .spacer
+      Year Built:
+      = home.year_built
+    .line
+      Lot:
+      = home.lot_info
+      .spacer
+      Parking:
+      = home.parking
+      .spacer
+      Garage:
+      = home.garage
+    %p
+      = home.description
   = form_for(home, remote: true) do |f|
     - if home.errors.any?
       #error_explanation

@@ -3,7 +3,7 @@ class CreateDetails < ActiveRecord::Migration
     create_table :details do |t|
       t.integer :home_id
       t.string :name
-      t.string :value
+      t.string :value, limit: 2000
 
       t.timestamps null: false
     end

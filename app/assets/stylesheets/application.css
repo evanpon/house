@@ -44,9 +44,11 @@ html {
 }
 .success {
   color: green;
+  margin-top: 5px;
 }
 .failure {
   color: red;
+  margin-top: 5px;
 }
 .hidden {
   display: none;
@@ -67,4 +69,13 @@ textarea {
 }
 h1, h2, h3, h4, h5 {
   margin: 0;
+}
+.details {
+  margin: 20px;
+}
+.line {
+  margin-bottom: 5px;
+}
+a:visited, a:active {
+  color: blue;
 }
