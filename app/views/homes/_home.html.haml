@@ -1,76 +1,77 @@
-.left_box
-  = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
-  %iframe{src: home.google_map_url, class: 'google_map hidden', id: "map_#{home.listing_id}"}
-  .image_count
-    - index = 1
-    - home.image_count.to_i.times do
-      = link_to(index, '#', {'data-image-id' => index, 'data-home-id' => home.listing_id})
-      - index += 1
-      .spacer
-        %nbsp
-    = link_to('map', '#', {'data-map-home-id' => home.listing_id})
+%div{id: "home_#{home.listing_id}"}
+  .left_box
+    = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
+    %iframe{src: home.google_map_url, class: 'google_map hidden', id: "map_#{home.listing_id}"}
+    .image_count
+      - index = 1
+      - home.image_count.to_i.times do
+        = link_to(index, '#', {'data-image-id' => index, 'data-home-id' => home.listing_id})
+        - index += 1
+        .spacer
+          %nbsp
+      = link_to('map', '#', {'data-map-home-id' => home.listing_id})
   
   
-.right_box
-  %h1 
-    = home.address
-    %span.spacer
-    = '-'
-    %span.spacer
-    = home.price
+  .right_box
+    %h1 
+      = home.address
+      %span.spacer
+      = '-'
+      %span.spacer
+      = home.price
     
-  %h3 
-    = home.listing_id
-    %span.spacer
-    = '-'
-    %span.spacer
-    = link_to('See it on Zillow', home.zillow_url)
+    %h3 
+      = home.listing_id
+      %span.spacer
+      = '-'
+      %span.spacer
+      = link_to('See it on Zillow', home.zillow_url)
   
-  .details
-    .line
-      Bedrooms:
-      = home.bedrooms
-      .spacer
-      Bathrooms:
-      = home.bathrooms
-      .spacer
-      Square Footage:
-      = home.square_footage
-      .spacer
-      Year Built:
-      = home.year_built
-    .line
-      Lot:
-      = home.lot_info
-      .spacer
-      Parking:
-      = home.parking
-      .spacer
-      Garage:
-      = home.garage
-    %p
-      = home.description
-  = form_for(home, remote: true) do |f|
-    - if home.errors.any?
-      #error_explanation
-        %h2= "#{pluralize(@home.errors.count, "error")} prohibited this home from being saved:"
-        %ul
-          - home.errors.full_messages.each do |msg|
-            %li= msg
+    .details
+      .line
+        Bedrooms:
+        = home.bedrooms
+        .spacer
+        Bathrooms:
+        = home.bathrooms
+        .spacer
+        Square Footage:
+        = home.square_footage
+        .spacer
+        Year Built:
+        = home.year_built
+      .line
+        Lot:
+        = home.lot_info
+        .spacer
+        Parking:
+        = home.parking
+        .spacer
+        Garage:
+        = home.garage
+      %p
+        = home.description
+    = form_for(home, remote: true) do |f|
+      - if home.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@home.errors.count, "error")} prohibited this home from being saved:"
+          %ul
+            - home.errors.full_messages.each do |msg|
+              %li= msg
 
-    .field
-      = f.label :notes
-      %br
-      = f.text_area :notes
-    .field
-      = f.label :ranking
-      %br
-      = f.number_field :ranking
-    .actions
-      = f.submit 'Save'
-    .success.hidden
-      Saved
-    .failure.hidden
-      Error
-.bottom
+      .field
+        = f.label :notes
+        %br
+        = f.text_area :notes
+      .field
+        = f.label :ranking
+        %br
+        = f.number_field :ranking
+      .actions
+        = f.submit 'Save'
+      .success.hidden
+        Saved
+      .failure.hidden
+        Error
+  .bottom
 
