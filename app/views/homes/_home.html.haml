@@ -25,7 +25,7 @@
       %span.spacer
       = '-'
       %span.spacer
-      = link_to('See it on Zillow', home.zillow_url)
+      = link_to('See it on Zillow', home.zillow_url, target: '_blank')
   
     .details
       .line
@@ -40,6 +40,9 @@
         .spacer
         Year Built:
         = home.year_built
+        .spacer
+        Listed:
+        = home.list_date || ''
       .line
         Lot:
         = home.lot_info

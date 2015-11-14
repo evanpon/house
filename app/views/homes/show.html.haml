@@ -1,2 +1,6 @@
-- @title = "Home #{@home.listing_id}"
-= render(partial: 'home', locals: {home: @home})
+- if @home
+  - @title = "Home #{@home.listing_id}"
+  = render(partial: 'home', locals: {home: @home})
+- else
+  %h1 
+    No home found

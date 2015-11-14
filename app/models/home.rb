@@ -25,6 +25,28 @@ class Home < ActiveRecord::Base
     details(true).each {|detail| @data[detail.name] = detail.value}
   end
   
+  def self.find_list_date(url)
+    doc = Nokogiri::HTML(open(url)) do |config|
+      config.nonet
+    end
+    nodes = doc.css('div.REPORT_STDBOX')
+
+    nodes.each_with_index do |node, index|
+      info = node.text
+      listing_id = pull_info(info, /MML#:(\d+?)Area/)
+      home = Home.where(listing_id: listing_id).first
+      if home
+        begin
+          puts home.list_date
+        rescue Exception  
+          home.add_detail('list_date', pull_info(info, /List Date(.*?)COMPARABLE/))
+          home.save!
+        end
+      end
+    end
+  end
+    
+  
   def self.parse_from_mls(url, session_data)
     doc = Nokogiri::HTML(open(url)) do |config|
       config.nonet
@@ -35,12 +57,13 @@ class Home < ActiveRecord::Base
     nodes.each do |node|
       home = Home.new
       info = node.text
-      home.listing_id = pull_info(info, /AMML#:(\d+?)Area/)
-      if Home.where(listing_id: home.listing_id).count > 0
-        # If we already have the home, skip it for now.
-        # TODO: figure out what should be updated for the old home.
-        next
-      end
+      home.listing_id = pull_info(info, /MML#:(\d+?)Area/)
+      next if home.listing_id.blank?
+
+      # If we already have the home, skip it for now.
+      # TODO: figure out what should be updated for the old home.
+      next if Home.where(listing_id: home.listing_id).count > 0 
+
       home.price = pull_info(info, /List Price:(.*?)Addr:/)
       home.address = pull_info(info, /Addr:(.*?)Unit#/)[0...-3] # Chop off Map symbol
       home.add_detail('lot_range', pull_info(info, /Lot Size:(.*?)# Acres/))
@@ -53,6 +76,7 @@ class Home < ActiveRecord::Base
       home.add_detail('year_built', pull_info(info, /Year Built:(\d+?)\s*\/\s*REMOD/))
       home.add_detail('parking', pull_info(info, /Parking:(.*?)Exterior/))
       home.add_detail('garage', pull_info(info, /#Gar:(.*?)Bsmt/))
+      home.add_detail('list_date', pull_info(info, /List Date(.*?)COMPARABLE/))
       
       image_count = info.scan(/photocaptions/).count - 1
       home.add_detail('image_count', image_count)
