@@ -1,3 +1,4 @@
+/ = image_tag(image_url("15681414/1"))
 %div{id: "home_#{home.listing_id}"}
   .left_box
     = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
@@ -42,7 +43,7 @@
         = home.year_built
         .spacer
         Listed:
-        = home.list_date || ''
+        = home.listed
       .line
         Lot:
         = home.lot_info

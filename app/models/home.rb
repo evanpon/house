@@ -2,7 +2,8 @@ require 'open-uri'
 
 class Home < ActiveRecord::Base
   has_many :details
-
+  has_one :scorecard
+  
   def method_missing(method, *args, &block)
     value = data[method.to_s]
     if value.nil?
@@ -46,6 +47,13 @@ class Home < ActiveRecord::Base
     end
   end
     
+  def listed
+    begin
+      home.list_date
+    rescue Exception
+      ""
+    end
+  end
   
   def self.parse_from_mls(url, session_data)
     doc = Nokogiri::HTML(open(url)) do |config|
@@ -117,6 +125,7 @@ class Home < ActiveRecord::Base
   
 
   def image_url(index=1)
+    # "/#{listing_id}/#{index}"
     "https://s3-us-west-2.amazonaws.com/evanpon.applications/house/#{listing_id}/#{index}"
   end
 
@@ -152,4 +161,11 @@ class Home < ActiveRecord::Base
     "#{lot} (#{lot_description})"
   end
   
+  def value
+    ((scorecard.calculate_score * 1000000) / price_as_float).round(1)
+  end
+  
+  def price_as_float
+    price.gsub(/[^\d\.]/, '').to_f
+  end
 end

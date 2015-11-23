@@ -11,15 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151107221418) do
-
-  create_table "attributes", force: :cascade do |t|
-    t.integer  "home_id",    limit: 4
-    t.string   "name",       limit: 255
-    t.string   "value",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
+ActiveRecord::Schema.define(version: 20151123065034) do
 
   create_table "details", force: :cascade do |t|
     t.integer  "home_id",    limit: 4
@@ -30,14 +22,6 @@ ActiveRecord::Schema.define(version: 20151107221418) do
   end
 
   add_index "details", ["home_id", "name"], name: "index_details_on_home_id_and_name", unique: true, using: :btree
-
-  create_table "fields", force: :cascade do |t|
-    t.integer  "home_id",    limit: 4
-    t.string   "name",       limit: 255
-    t.string   "value",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
 
   create_table "homes", force: :cascade do |t|
     t.string   "address",    limit: 255
@@ -51,5 +35,20 @@ ActiveRecord::Schema.define(version: 20151107221418) do
 
   add_index "homes", ["listing_id"], name: "index_homes_on_listing_id", unique: true, using: :btree
   add_index "homes", ["ranking"], name: "index_homes_on_ranking", using: :btree
+
+  create_table "scorecards", force: :cascade do |t|
+    t.integer  "home_id",    limit: 4
+    t.integer  "kitchen",    limit: 4, default: 0
+    t.integer  "light",      limit: 4, default: 0
+    t.integer  "yard",       limit: 4, default: 0
+    t.integer  "location",   limit: 4, default: 0
+    t.integer  "potential",  limit: 4, default: 0
+    t.integer  "layout",     limit: 4, default: 0
+    t.integer  "charm",      limit: 4, default: 0
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "scorecards", ["home_id"], name: "index_scorecards_on_home_id", using: :btree
 
 end

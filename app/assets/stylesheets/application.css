@@ -25,6 +25,7 @@ html {
 .left_box {
   float: left;
   width: 650px;
+  min-height: 250px;
 }
 
 .spacer {

@@ -31,7 +31,7 @@ class HomesController < ApplicationController
   end
 
   def ranked
-    @homes = Home.where('ranking > 0').order(ranking: :desc)
+    @homes = Home.where('ranking > 5').order(ranking: :desc)
     render :index
   end
   
