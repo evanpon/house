@@ -14,7 +14,7 @@ class HomesController < ApplicationController
         }
         format.json {
           puts "render json"
-          render json: {value: @home.value.to_s, score: @home.scorecard.calculate_score.to_s}
+          render json: {id: @home.id, value: @home.value.to_s, score: @home.scorecard.calculate_score.to_s}
         }
         format.js {   
           puts "render js"

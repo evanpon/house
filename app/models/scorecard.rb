@@ -8,13 +8,13 @@ class Scorecard < ActiveRecord::Base
 
   def calculate_score
     score = 0
-    score += points(:location) * 2
+    score += points(:location) * 3
     [:kitchen, :layout, :light, :charm, :potential, :yard].each do |sym|
       score += points(sym)
     end
-    score
+    # Normalize it on a scale of 0-100
+    score == 0 ? 0 : ((score + 9) * 3.7).to_i
   end
-  
   
   def unknown?(score)
     score == UNKNOWN || score.nil?

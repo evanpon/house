@@ -27,13 +27,13 @@
       = ''
       
       Score:
-      %span#score_span
+      %span{id: "score_#{home.id}"}
         = home.scorecard.calculate_score
       %span.spacer
       = ''
       / %span.spacer
       Value:
-      %span#value_span
+      %span{id: "value_#{home.id}"}
         = home.value
       %span.spacer
       = link_to('See it on Zillow', home.zillow_url, target: '_blank')
@@ -94,10 +94,6 @@
                   %br
                   = form.select(:kitchen, options_for_select(options_array,home.scorecard.kitchen))
               %td
-                .field.center.right_push
-                  = form.label :yard
-                  %br
-                  = form.select(:yard, options_for_select(options_array,home.scorecard.yard))
               %td
                 .field.center.right_push
                   = form.label :light
@@ -118,6 +114,11 @@
                   = form.label :layout
                   %br
                   = form.select(:layout, options_for_select(options_array,home.scorecard.layout))
+              %td
+                .field.center.right_push
+                  = form.label :yard
+                  %br
+                  = form.select(:yard, options_for_select(options_array,home.scorecard.yard))
                 
                 
             
