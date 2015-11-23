@@ -10,11 +10,16 @@ class HomesController < ApplicationController
     respond_to do |format|
       if @home.update(home_params)
         format.html { 
-          puts "html?"
-          redirect_to @home, notice: 'Home was successfully updated.' }
-        format.js { 
-          puts "json!"
-          head :no_content }
+          redirect_to @home, notice: 'Home was successfully updated.' 
+        }
+        format.json {
+          puts "render json"
+          render json: {value: @home.value.to_s, score: @home.scorecard.calculate_score.to_s}
+        }
+        format.js {   
+          puts "render js"
+          head :no_content 
+        }
       else
         format.html { render :edit }
         format.json { render json: @home.errors, status: :unprocessable_entity }
@@ -27,7 +32,7 @@ class HomesController < ApplicationController
   end
 
   def home_params
-    params.require(:home).permit(:notes, :ranking)
+    params.require(:home).permit(:notes, :ranking, scorecard_attributes: [:id, :kitchen, :yard, :layout, :location, :light, :charm, :potential])
   end
 
   def ranked

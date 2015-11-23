@@ -4,6 +4,8 @@ class Home < ActiveRecord::Base
   has_many :details
   has_one :scorecard
   
+  accepts_nested_attributes_for :scorecard
+  
   def method_missing(method, *args, &block)
     value = data[method.to_s]
     if value.nil?

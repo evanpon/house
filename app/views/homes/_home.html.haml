@@ -24,9 +24,20 @@
     %h3 
       = home.listing_id
       %span.spacer
-      = '-'
+      = ''
+      
+      Score:
+      %span#score_span
+        = home.scorecard.calculate_score
+      %span.spacer
+      = ''
+      / %span.spacer
+      Value:
+      %span#value_span
+        = home.value
       %span.spacer
       = link_to('See it on Zillow', home.zillow_url, target: '_blank')
+      
   
     .details
       .line
@@ -67,10 +78,49 @@
         = f.label :notes
         %br
         = f.text_area :notes
-      .field
-        = f.label :ranking
-        %br
-        = f.number_field :ranking
+      = f.fields_for :scorecard do |form|
+        - options_array = [['', Scorecard::UNKNOWN], ['Poor', Scorecard::POOR], ['Average', Scorecard::AVERAGE], ['Good', Scorecard::GOOD], ['Awesome', Scorecard::AWESOME]]
+        %table
+          %th
+            %tr
+              %td
+                .field.center.right_push
+                  = form.label :location
+                  %br
+                  = form.select(:location, options_for_select(options_array,home.scorecard.location))
+              %td
+                .field.center.right_push
+                  = form.label :kitchen
+                  %br
+                  = form.select(:kitchen, options_for_select(options_array,home.scorecard.kitchen))
+              %td
+                .field.center.right_push
+                  = form.label :yard
+                  %br
+                  = form.select(:yard, options_for_select(options_array,home.scorecard.yard))
+              %td
+                .field.center.right_push
+                  = form.label :light
+                  %br
+                  = form.select(:light, options_for_select(options_array,home.scorecard.light))
+              %td
+                .field.center.right_push
+                  = form.label :potential
+                  %br
+                  = form.select(:potential, options_for_select(options_array,home.scorecard.potential))
+              %td
+                .field.center.right_push
+                  = form.label :charm
+                  %br
+                  = form.select(:charm, options_for_select(options_array,home.scorecard.charm))
+              %td
+                .field.center.right_push
+                  = form.label :layout
+                  %br
+                  = form.select(:layout, options_for_select(options_array,home.scorecard.layout))
+                
+                
+            
       .actions
         = f.submit 'Save'
       .success.hidden

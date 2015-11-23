@@ -1,4 +1,8 @@
 $ ->
+  $.ajaxSetup({
+    dataType: 'json'
+  })
+  
   fixedImages = {}
   
   $("a[data-image-id]").hover (e) ->
@@ -39,6 +43,8 @@ $ ->
   $("form").on("ajax:success", (e, data, status, xhr) ->
     element = $(this).find(".success")
     element.show().fadeOut(1500)
+    $("#score_span").text(data["score"])
+    $("#value_span").text(data["value"])
   ).on "ajax:error", (e, xhr, status, error) ->
     element = $(this).find(".failure")
     element.show().fadeOut(2000)

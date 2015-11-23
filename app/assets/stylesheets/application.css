@@ -80,3 +80,12 @@ h1, h2, h3, h4, h5 {
 a:visited, a:active {
   color: blue;
 }
+.center {
+  text-align: center;
+}
+.right_push {
+  margin-right: 10px;
+}
+.value {
+  color: red;
+}
