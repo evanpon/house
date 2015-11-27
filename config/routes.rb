@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     collection do
       get 'ranked'
       get 'unreviewed'
+      get 'by_value'
+      get 'by_score'
     end
   end
   root 'homes#index'

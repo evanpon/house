@@ -8,16 +8,18 @@ class HomesController < ApplicationController
   def update
     @home = Home.find(params[:id])
     respond_to do |format|
-      if @home.update(home_params)
+      @home.assign_attributes(home_params)
+      @home.ranking = 0 if params['commit'] == 'Reject'
+      @home.value = @home.calculate_value
+      puts @home.value
+      if @home.save
         format.html { 
           redirect_to @home, notice: 'Home was successfully updated.' 
         }
         format.json {
-          puts "render json"
           render json: {id: @home.id, value: @home.value.to_s, score: @home.scorecard.calculate_score.to_s}
         }
         format.js {   
-          puts "render js"
           head :no_content 
         }
       else
@@ -41,7 +43,18 @@ class HomesController < ApplicationController
   end
   
   def unreviewed
-    @homes = Home.where('ranking is null')
+    @homes = Home.where('ranking is null && value = 0')
+    render :index
+  end
+  
+  def by_value
+    @homes = Home.where('value > 50').order(value: :desc)
+    render :index
+  end
+  
+  def by_score
+    @homes = Home.where('value > 20').all.sort_by {|home| -home.score}
+    # @homes.sort_by! {|home| home.score}
     render :index
   end
 end

@@ -93,6 +93,7 @@ class Home < ActiveRecord::Base
       home.save_images(session_data, image_count)
       
       home.save_zillow_url
+      home.scorecard = Scorecard.new
       home.save!
     end
     
@@ -163,11 +164,20 @@ class Home < ActiveRecord::Base
     "#{lot} (#{lot_description})"
   end
   
-  def value
+  def calculate_value
     ((scorecard.calculate_score * 1000000) / price_as_float).round(1)
   end
   
   def price_as_float
     price.gsub(/[^\d\.]/, '').to_f
+  end
+  
+  def walk_score
+    hyphenated_address = address.strip.gsub(/\s+/, '-').gsub(',', '')    
+    url = "https://www.walkscore.com/score/#{hyphenated_address}-portland-or"
+  end
+  
+  def score
+    scorecard.calculate_score
   end
 end
