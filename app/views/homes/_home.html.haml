@@ -36,8 +36,9 @@
       %span{id: "value_#{home.id}"}
         = home.value
       %span.spacer
-      = link_to('See it on Zillow', home.zillow_url, target: '_blank')
-      
+      = link_to('Zillow', home.zillow_url, target: '_blank')
+      %span.spacer
+      = link_to('Portland Maps', home.portland_map_url, target: '_blank')
   
     .details
       .line
@@ -64,9 +65,19 @@
         .spacer
         Garage:
         = home.garage
+      .line
+        Walk Score:
+        = home.walk_score
+        .spacer
+        Transit Score:
+        = home.transit_score
+        .spacer
+        Bike Score:
+        = home.bike_score
         .spacer
         Property Tax:
         = home.property_tax
+        
       %p
         = home.description
     = form_for(home, remote: true) do |f|

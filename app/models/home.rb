@@ -7,7 +7,8 @@ class Home < ActiveRecord::Base
   accepts_nested_attributes_for :scorecard
   DETAILS = [:lot_range, :lot_dimensions, :lot_description, :square_footage, :description,
              :bedrooms, :bathrooms, :year_built, :parking, :garage, :list_date, :property_tax,
-             :image_count, :zillow_url]
+             :image_count, :zillow_url, :portland_map_url, :walk_score, :transit_score,
+             :bike_score]
   
   def method_missing(method, *args, &block)
     if DETAILS.include?(method)
@@ -95,6 +96,9 @@ class Home < ActiveRecord::Base
       home.save_images(session_data, image_count)
       
       home.save_zillow_url
+      home.save_portland_map_url
+      home.add_walk_scores
+      
       home.scorecard = Scorecard.new
       home.save!
     end
@@ -174,9 +178,33 @@ class Home < ActiveRecord::Base
     price.gsub(/[^\d\.]/, '').to_f
   end
   
-  def walk_score
+  def add_walk_scores
     hyphenated_address = address.strip.gsub(/\s+/, '-').gsub(',', '')    
     url = "https://www.walkscore.com/score/#{hyphenated_address}-portland-or"
+    
+    doc = Nokogiri::HTML(open(url)) do |config|
+      config.nonet
+    end
+    
+    html = doc.css('div#address-header').first.inner_html
+
+    %w(walk transit bike).each do |type|
+      html =~ /pp.walk.sc\/badge\/#{type}\/score\/(\d+).png/
+      details.new(name: "#{type}_score", value: $1)
+      puts $1
+    end
+  end
+  
+  def save_portland_map_url
+    encoded = URI.escape(address.strip)
+    uri = URI("http://www.portlandmaps.com/parse_results.cfm?query=#{encoded}")
+    response = Net::HTTP.get_response(uri)
+    if response.header['location'] =~ /propertyid=(\w+)&/
+      url = "https://www.portlandmaps.com/detail/property/#{$1}_did/"
+    else
+      url = "https://www.portlandmaps.com/#{response.header['location']}"
+    end
+    details.new(name: 'portland_map_url', value: url)
   end
   
   def score
