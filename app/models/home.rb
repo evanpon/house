@@ -5,14 +5,15 @@ class Home < ActiveRecord::Base
   has_one :scorecard
   
   accepts_nested_attributes_for :scorecard
+  DETAILS = [:lot_range, :lot_dimensions, :lot_description, :square_footage, :description,
+             :bedrooms, :bathrooms, :year_built, :parking, :garage, :list_date, :property_tax,
+             :image_count, :zillow_url]
   
   def method_missing(method, *args, &block)
-    value = data[method.to_s]
-    if value.nil?
-      puts "no such"
-      super(method, args, block)
+    if DETAILS.include?(method)
+      data[method.to_s]
     else
-      value
+      super(method, args, block)
     end
   end
   
@@ -72,7 +73,7 @@ class Home < ActiveRecord::Base
 
       # If we already have the home, skip it for now.
       # TODO: figure out what should be updated for the old home.
-      next if Home.where(listing_id: home.listing_id).count > 0 
+      # next if Home.where(listing_id: home.listing_id).count > 0
 
       home.price = pull_info(info, /List Price:(.*?)Addr:/)
       home.address = pull_info(info, /Addr:(.*?)Unit#/)[0...-3] # Chop off Map symbol
@@ -87,7 +88,8 @@ class Home < ActiveRecord::Base
       home.add_detail('parking', pull_info(info, /Parking:(.*?)Exterior/))
       home.add_detail('garage', pull_info(info, /#Gar:(.*?)Bsmt/))
       home.add_detail('list_date', pull_info(info, /List Date(.*?)COMPARABLE/))
-      
+      home.add_detail('property_tax', pull_info(info, /PTax\/Yr:(.*?)Rent/))
+
       image_count = info.scan(/photocaptions/).count - 1
       home.add_detail('image_count', image_count)
       home.save_images(session_data, image_count)
