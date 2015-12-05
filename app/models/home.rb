@@ -74,7 +74,7 @@ class Home < ActiveRecord::Base
 
       # If we already have the home, skip it for now.
       # TODO: figure out what should be updated for the old home.
-      # next if Home.where(listing_id: home.listing_id).count > 0
+      next if Home.where(listing_id: home.listing_id).count > 0
 
       home.price = pull_info(info, /List Price:(.*?)Addr:/)
       home.address = pull_info(info, /Addr:(.*?)Unit#/)[0...-3] # Chop off Map symbol

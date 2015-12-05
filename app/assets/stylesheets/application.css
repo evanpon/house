@@ -17,6 +17,9 @@
 html {
   font-family: 'Droid Serif', serif
 }
+body {
+  min-width: 1350px;
+}
 .image_count {
   text-align: center;
   font-size: 1.2em;
