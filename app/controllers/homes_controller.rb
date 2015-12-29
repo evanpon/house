@@ -1,6 +1,6 @@
 class HomesController < ApplicationController
   def index
-    @homes = Home.order(id: :desc)
+    @homes = Home.order(id: :desc).limit(50)
   end
   
   # PATCH/PUT /users/1
