@@ -67,7 +67,7 @@ class Home < ActiveRecord::Base
     nodes = doc.css('div.REPORT_STDBOX')
 
     if nodes.size > 10
-      # Home.update_all("active = 0")
+      Home.update_all("active = 0")
     end
 
     nodes.each do |node|
