@@ -15,7 +15,10 @@
   
   .right_box
     %h1 
-      = home.address
+      
+      - active_class = home.active ? 'active_home' : 'inactive_home'
+      %span{class: active_class}
+        = home.address
       %span.spacer
       = '-'
       %span.spacer

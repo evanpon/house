@@ -66,40 +66,47 @@ class Home < ActiveRecord::Base
     
     nodes = doc.css('div.REPORT_STDBOX')
 
+    if nodes.size > 10
+      # Home.update_all("active = 0")
+    end
+
     nodes.each do |node|
-      home = Home.new
       info = node.text
-      home.listing_id = pull_info(info, /MML#:(\d+?)Area/)
-      next if home.listing_id.blank?
+      listing_id = pull_info(info, /MML#:(\d+?)Area/)
+      next if listing_id.nil?
+      
+      home = Home.find_or_initialize_by(listing_id: listing_id)
+      home.active = true
 
-      # If we already have the home, skip it for now.
-      # TODO: figure out what should be updated for the old home.
-      next if Home.where(listing_id: home.listing_id).count > 0
-
+      # Always update price, since that changes.
       home.price = pull_info(info, /List Price:(.*?)Addr:/)
-      home.address = pull_info(info, /Addr:(.*?)Unit#/)[0...-3] # Chop off Map symbol
-      home.add_detail('lot_range', pull_info(info, /Lot Size:(.*?)# Acres/))
-      home.add_detail('lot_dimensions', pull_info(info, /Lot Dimensions:(.*?)Wtfrnt/))
-      home.add_detail('lot_description', pull_info(info, /Lot Desc:(.*?)Body Water/))
-      home.add_detail('square_footage', pull_info(info, /Total SQFT:(.*?)Addl/))
-      home.add_detail('description', pull_info(info, /Public:(.*?)APPROXIMATE/))
-      home.add_detail('bedrooms', pull_info(info, /#Bdrms:(.*?)#Bath/))
-      home.add_detail('bathrooms', pull_info(info, /#Bath:(.*?)#Lvl:/))
-      home.add_detail('year_built', pull_info(info, /Year Built:(\d+?)\s*\/\s*REMOD/))
-      home.add_detail('parking', pull_info(info, /Parking:(.*?)Exterior/))
-      home.add_detail('garage', pull_info(info, /#Gar:(.*?)Bsmt/))
-      home.add_detail('list_date', pull_info(info, /List Date(.*?)COMPARABLE/))
-      home.add_detail('property_tax', pull_info(info, /PTax\/Yr:(.*?)Rent/))
+      
+      # Only update these fields the first time, they don't change. 
+      if home.new_record?
+        home.address = pull_info(info, /Addr:(.*?)Unit#/)[0...-3] # Chop off Map symbol
+        home.add_detail('lot_range', pull_info(info, /Lot Size:(.*?)# Acres/))
+        home.add_detail('lot_dimensions', pull_info(info, /Lot Dimensions:(.*?)Wtfrnt/))
+        home.add_detail('lot_description', pull_info(info, /Lot Desc:(.*?)Body Water/))
+        home.add_detail('square_footage', pull_info(info, /Total SQFT:(.*?)Addl/))
+        home.add_detail('description', pull_info(info, /Public:(.*?)APPROXIMATE/))
+        home.add_detail('bedrooms', pull_info(info, /#Bdrms:(.*?)#Bath/))
+        home.add_detail('bathrooms', pull_info(info, /#Bath:(.*?)#Lvl:/))
+        home.add_detail('year_built', pull_info(info, /Year Built:(\d+?)\s*\/\s*REMOD/))
+        home.add_detail('parking', pull_info(info, /Parking:(.*?)Exterior/))
+        home.add_detail('garage', pull_info(info, /#Gar:(.*?)Bsmt/))
+        home.add_detail('list_date', pull_info(info, /List Date(.*?)COMPARABLE/))
+        home.add_detail('property_tax', pull_info(info, /PTax\/Yr:(.*?)Rent/))
 
-      image_count = info.scan(/photocaptions/).count - 1
-      home.add_detail('image_count', image_count)
-      home.save_images(session_data, image_count)
-      
-      home.save_zillow_url
-      home.save_portland_map_url
-      home.add_walk_scores
-      
-      home.scorecard = Scorecard.new
+        image_count = info.scan(/photocaptions/).count - 1
+        home.add_detail('image_count', image_count)
+        home.save_images(session_data, image_count)
+
+        home.save_zillow_url
+        home.save_portland_map_url
+        home.add_walk_scores
+
+        home.scorecard = Scorecard.new
+      end
       home.save!
     end
     

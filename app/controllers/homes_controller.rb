@@ -1,6 +1,6 @@
 class HomesController < ApplicationController
   def index
-    @homes = Home.order(id: :desc).limit(50)
+    @homes = Home.order(id: :desc).where(active: true).limit(50)
   end
   
   # PATCH/PUT /users/1
@@ -43,7 +43,7 @@ class HomesController < ApplicationController
   end
   
   def unreviewed
-    @homes = Home.where('ranking is null && value = 0')
+    @homes = Home.where('ranking is null && value = 0 && active = 1')
     render :index
   end
   

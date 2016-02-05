@@ -92,3 +92,10 @@ a:visited, a:active {
 .value {
   color: red;
 }
+.active_home {
+  color: green;
+}
+
+.inactive_home {
+  color: red;
+}
