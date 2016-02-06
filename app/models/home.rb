@@ -73,7 +73,7 @@ class Home < ActiveRecord::Base
     nodes.each do |node|
       info = node.text
       listing_id = pull_info(info, /MML#:(\d+?)Area/)
-      next if listing_id.nil?
+      next if listing_id.blank?
       
       home = Home.find_or_initialize_by(listing_id: listing_id)
       home.active = true
