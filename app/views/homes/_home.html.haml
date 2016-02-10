@@ -1,8 +1,9 @@
 / = image_tag(image_url("15681414/1"))
 %div{id: "home_#{home.listing_id}"}
   .left_box
-    = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
-    %iframe{src: home.google_map_url, class: 'google_map hidden', id: "map_#{home.listing_id}"}
+    .picture_box
+      = image_tag(home.image_url, id: "image_#{home.listing_id}", class: 'house_image')
+      %iframe{src: home.google_map_url, class: 'google_map hidden', id: "map_#{home.listing_id}"}
     .image_count
       - index = 1
       - home.image_count.to_i.times do

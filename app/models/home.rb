@@ -112,6 +112,32 @@ class Home < ActiveRecord::Base
     
   end
   
+  def self.add_year(url, session_data)
+    doc = Nokogiri::HTML(open(url)) do |config|
+      config.nonet
+    end
+
+    nodes = doc.css('div.REPORT_STDBOX')
+
+    nodes.each do |node|
+      info = node.text
+      listing_id = pull_info(info, /MML#:(\d+?)Area/)
+      next if listing_id.blank?
+
+      home = Home.where(listing_id: listing_id).first
+      home.active = true
+      year = pull_info(info, /Year Built:(\d+?)\s*\//)
+      puts "Home #{listing_id} was built in #{year}"
+      detail = home.details.where(name: 'year_built').first
+      if detail
+        detail.value = year
+        detail.save!
+      end
+      # home.add_detail(:year_built, year)
+      # home.save!
+    end
+  end
+  
   def self.pull_info(info, regex)
     info =~ regex ? $1.strip : ''
   end

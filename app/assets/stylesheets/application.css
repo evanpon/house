@@ -29,8 +29,11 @@ body {
   float: left;
   width: 650px;
   min-height: 250px;
+/*  border: 1px solid;*/
 }
-
+.picture_box {
+  height: 484px;
+}
 .spacer {
   width: 5px;
   display: inline-block;
