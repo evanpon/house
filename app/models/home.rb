@@ -91,7 +91,7 @@ class Home < ActiveRecord::Base
         home.add_detail('description', pull_info(info, /Public:(.*?)APPROXIMATE/))
         home.add_detail('bedrooms', pull_info(info, /#Bdrms:(.*?)#Bath/))
         home.add_detail('bathrooms', pull_info(info, /#Bath:(.*?)#Lvl:/))
-        home.add_detail('year_built', pull_info(info, /Year Built:(\d+?)\s*\/\s*REMOD/))
+        home.add_detail('year_built', pull_info(info, /Year Built:(\d+?)\s*\//))
         home.add_detail('parking', pull_info(info, /Parking:(.*?)Exterior/))
         home.add_detail('garage', pull_info(info, /#Gar:(.*?)Bsmt/))
         home.add_detail('list_date', pull_info(info, /List Date(.*?)COMPARABLE/))
