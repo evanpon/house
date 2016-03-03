@@ -228,14 +228,26 @@ class Home < ActiveRecord::Base
     end
   end
   
+  def update_detail(name, value)
+    detail = details.where(name: name).first
+    if detail
+      detail.value = value
+      detail.save
+    else
+      add_detail(name, value)
+      save
+    end
+  end
+  
   def save_portland_map_url
     encoded = URI.escape(address.strip)
     uri = URI("http://www.portlandmaps.com/parse_results.cfm?query=#{encoded}")
     response = Net::HTTP.get_response(uri)
     if response.header['location'] =~ /propertyid=(\w+)&/
+      puts "first url: #{$1}."
       url = "https://www.portlandmaps.com/detail/property/#{$1}_did/"
     else
-      url = "https://www.portlandmaps.com/#{response.header['location']}"
+      url = response.header['location']
     end
     details.new(name: 'portland_map_url', value: url)
   end
